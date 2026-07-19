@@ -14,6 +14,9 @@
 /mac/
 /corpus_v2/
 /corpus_v3/
+/corpus_v4/
+/corpus_v5/
+corpus_v4.tar
 
 # python
 /.venv/
