@@ -74,8 +74,9 @@ main {
 .sq.last::before  { background: var(--last); }
 .sq.sel::before   { background: var(--sel); }
 .sq.check::before { background: radial-gradient(circle, var(--check) 0%, transparent 70%); }
-.sq .glyph { position: relative; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
-.sq .glyph svg { display: block; width: 100%; height: 100%; }
+/* height:auto + intrinsic 1:1 ratio — never a percentage height (iOS-safe) */
+.sq .glyph { position: relative; z-index: 1; width: 100%; line-height: 0; pointer-events: none; }
+.sq .glyph svg { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; }
 
 .sq.target::after {
   content: ""; position: absolute; z-index: 2;
@@ -110,7 +111,7 @@ main {
   border: 0; border-radius: 8px; cursor: pointer;
   background: var(--light);
 }
-#promo-choices button svg { display: block; width: 100%; height: 100%; }
+#promo-choices button svg { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; }
 #promo-choices button:hover { background: #fff; }
 
 #panel {

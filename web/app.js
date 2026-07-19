@@ -1,7 +1,7 @@
 // app.js — board UI. Legality/mate/placement come from the engine's
 // legalmoves/board commands; this file only draws state and relays clicks.
 
-import { PIECES } from './pieces.js';
+import { PIECES } from './pieces.js?v=2';
 
 const PIECE_NAME = { q: 'queen', r: 'rook', b: 'bishop', n: 'knight' };
 const FILES = 'abcdefgh';
