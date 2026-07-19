@@ -1,10 +1,9 @@
 // app.js — board UI. Legality/mate/placement come from the engine's
 // legalmoves/board commands; this file only draws state and relays clicks.
 
-const GLYPH = {
-  P: '\u2659', N: '\u2658', B: '\u2657', R: '\u2656', Q: '\u2655', K: '\u2654',
-  p: '\u265F', n: '\u265E', b: '\u265D', r: '\u265C', q: '\u265B', k: '\u265A',
-};
+import { PIECES } from './pieces.js';
+
+const PIECE_NAME = { q: 'queen', r: 'rook', b: 'bishop', n: 'knight' };
 const FILES = 'abcdefgh';
 
 const els = {
@@ -215,7 +214,8 @@ function pickPromotion(color, candidates) {
     for (const uci of candidates) {
       const piece = color === 'w' ? uci[4].toUpperCase() : uci[4];
       const btn = document.createElement('button');
-      btn.textContent = GLYPH[piece];
+      btn.innerHTML = PIECES[piece];
+      btn.setAttribute('aria-label', PIECE_NAME[uci[4]] || uci[4]);
       btn.onclick = (ev) => { ev.stopPropagation(); els.promo.classList.add('hidden'); resolve(uci); };
       els.promoChoices.appendChild(btn);
     }
@@ -317,8 +317,8 @@ function render() {
       const p = S.pieces[sq];
       if (p) {
         const g = document.createElement('span');
-        g.className = 'glyph ' + (p === p.toUpperCase() ? 'white' : 'black');
-        g.textContent = GLYPH[p];
+        g.className = 'glyph';
+        g.innerHTML = PIECES[p];
         d.appendChild(g);
       }
       if (col === 7) {

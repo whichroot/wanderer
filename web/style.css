@@ -1,5 +1,10 @@
 :root {
-  --sq: min(11vmin, 76px);
+  --gutter: 24px;              /* main padding */
+  --bar-w: 16px;               /* eval bar width */
+  --gap: 10px;                 /* eval bar <-> board gap */
+  /* square size: fill the viewport width (minus eval bar + padding),
+     stay on screen in landscape (vmin), cap at the desktop size (8*76px) */
+  --sq: calc(min(100vw - 2 * var(--gutter) - var(--bar-w) - var(--gap), 92vmin, 608px) / 8);
   --light: #f0d9b5;
   --dark: #b58863;
   --sel: rgba(20, 85, 30, .5);
@@ -18,17 +23,22 @@ body {
   color: var(--text);
   font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;          /* mobile: account for dynamic browser chrome */
   display: grid;
   place-items: center;
 }
 
-main { display: flex; gap: 28px; padding: 24px; flex-wrap: wrap; justify-content: center; }
+main {
+  display: flex; gap: 28px; padding: var(--gutter);
+  flex-wrap: wrap; justify-content: center;
+  max-width: 100vw;
+}
 
-#play { display: flex; gap: 10px; align-items: flex-start; }
+#play { display: flex; gap: var(--gap); align-items: flex-start; }
 #boardwrap { position: relative; }
 
 #evalbar {
-  width: 16px; height: calc(var(--sq) * 8);
+  width: var(--bar-w); height: calc(var(--sq) * 8);
   background: #3a3735; border-radius: 3px; overflow: hidden;
   position: relative; box-shadow: inset 0 0 0 1px rgba(0,0,0,.3);
 }
@@ -52,10 +62,9 @@ main { display: flex; gap: 28px; padding: 24px; flex-wrap: wrap; justify-content
 .sq {
   width: var(--sq); height: var(--sq);
   display: grid; place-items: center;
-  font-size: calc(var(--sq) * .74);
   cursor: pointer;
   position: relative;
-  line-height: 1;
+  touch-action: manipulation;   /* no double-tap zoom delay on mobile */
 }
 .sq.light { background: var(--light); }
 .sq.dark  { background: var(--dark); }
@@ -65,9 +74,8 @@ main { display: flex; gap: 28px; padding: 24px; flex-wrap: wrap; justify-content
 .sq.last::before  { background: var(--last); }
 .sq.sel::before   { background: var(--sel); }
 .sq.check::before { background: radial-gradient(circle, var(--check) 0%, transparent 70%); }
-.sq .glyph { position: relative; z-index: 1; }
-.sq .glyph.white { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.75); }
-.sq .glyph.black { color: #111; text-shadow: 0 1px 2px rgba(255,255,255,.25); }
+.sq .glyph { position: relative; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+.sq .glyph svg { display: block; width: 100%; height: 100%; }
 
 .sq.target::after {
   content: ""; position: absolute; z-index: 2;
@@ -97,15 +105,16 @@ main { display: flex; gap: 28px; padding: 24px; flex-wrap: wrap; justify-content
   padding: 16px; border-radius: 10px;
 }
 #promo-choices button {
-  font-size: calc(var(--sq) * .8);
   width: var(--sq); height: var(--sq);
+  padding: calc(var(--sq) * .05);
   border: 0; border-radius: 8px; cursor: pointer;
   background: var(--light);
 }
+#promo-choices button svg { display: block; width: 100%; height: 100%; }
 #promo-choices button:hover { background: #fff; }
 
 #panel {
-  width: 300px; background: var(--panel);
+  width: 300px; max-width: 100%; background: var(--panel);
   border-radius: 10px; padding: 18px 20px;
   display: flex; flex-direction: column; gap: 12px;
   align-self: stretch;
@@ -159,4 +168,13 @@ select { flex: 1; }
 #moves {
   font-family: ui-monospace, Menlo, monospace; font-size: 12.5px;
   opacity: .8; overflow-y: auto; max-height: 180px; word-wrap: break-word;
+}
+
+/* narrow screens: tighter gutters, panel stacks under the board at board width */
+@media (max-width: 640px) {
+  :root { --gutter: 10px; }
+  main { gap: 14px; }
+  #panel { width: calc(var(--sq) * 8 + var(--bar-w) + var(--gap)); }
+  .row { flex-wrap: wrap; }
+  .row button { flex: 1; }
 }
