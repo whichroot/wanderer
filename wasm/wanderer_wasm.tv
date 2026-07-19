@@ -1,0 +1,27 @@
+// wasm32 wrapper: exports wasm_init/wasm_inbox/wasm_line. Build: ./build_wasm.sh
+import "../wanderer.tv";
+
+var g_wasm_inbox: *u8 = null;
+
+#[export]
+fn wasm_init() -> i64 {
+    init_tables();
+    set_startpos();
+    g_wasm_inbox = alloc(8192);
+    return 0;
+}
+
+#[export]
+fn wasm_inbox() -> *u8 {
+    return g_wasm_inbox;
+}
+
+#[export]
+fn wasm_line(n: i64) -> i64 {
+    var l: i32 = n as i32;
+    if l < 0 { l = 0; }
+    if l > 8190 { l = 8190; }
+    g_wasm_inbox[l] = 0;
+    handle_line(g_wasm_inbox, l);
+    return 0;
+}

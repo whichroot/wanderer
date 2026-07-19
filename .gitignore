@@ -1,0 +1,29 @@
+# build artifacts
+/build/
+/wanderer
+/wanderer*
+*.ll
+*.o
+*.nnue
+
+# instrumentation & research (private)
+/tools/
+/bin/
+/data/
+/files/
+/mac/
+/corpus_v2/
+/corpus_v3/
+
+# python
+/.venv/
+__pycache__/
+*.pyc
+
+# logs & match output
+*.log
+*.pgn
+
+# macOS
+.DS_Store
+corpus_v4

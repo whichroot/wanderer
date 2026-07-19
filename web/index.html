@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play Wanderer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <div id="play">
+    <div id="evalbar" title="evaluation (white advantage)"><div id="evalbar-fill"></div></div>
+    <div id="boardwrap">
+      <div id="board" aria-label="chess board"></div>
+      <div id="promo" class="hidden">
+        <div id="promo-choices"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside id="panel">
+    <h1>Wanderer</h1>
+    <p class="sub">a chess engine written entirely in Traveler, compiled to WebAssembly. search runs in a
+    Web Worker.</p>
+
+    <div id="status">loading engine…</div>
+
+    <div class="row">
+      <button id="new-white">Play White</button>
+      <button id="new-black">Play Black</button>
+      <button id="undo" title="take back your last move (Ctrl/Cmd+Z)">Undo</button>
+    </div>
+
+    <div id="pad-wrap">
+      <div id="pad" tabindex="0" role="slider" aria-label="think time and temperature"
+           aria-valuetext="1.0 s, cold">
+        <span class="pad-axis pad-x">← faster · slower →</span>
+        <span class="pad-axis pad-y">hotter ↑</span>
+        <div id="pad-dot"></div>
+      </div>
+      <div id="pad-label">1.0 s · cold</div>
+    </div>
+
+    <div id="readout">
+      <div id="evaltext">—</div>
+      <div id="pv"></div>
+    </div>
+
+    <div id="moves"></div>
+  </aside>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
